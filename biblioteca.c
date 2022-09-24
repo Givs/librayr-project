@@ -12,6 +12,7 @@ struct TpLivro{
   int QtdPaginas;
 	int QtdLivrosDisponiveis;
   int Status;
+  int QtdLivroCadastrado;
   };
 
 typedef struct TpLivro TpLIVRO;
@@ -55,6 +56,7 @@ void Incluir() {
   char LivroParaVerificar[20];
   char titulo[100];
   int LivroExiste;
+  int aux;
 
   do {
       system("cls");
@@ -87,7 +89,10 @@ void Incluir() {
       scanf("%d", &RgLivro.QtdPaginas);
 
       printf("Quantidade de Livros Disponíveis: ");
-      scanf("%d",&RgLivro.QtdLivrosDisponiveis);
+      scanf("%d",&aux);
+
+      RgLivro.QtdLivrosDisponiveis = aux;
+      RgLivro.QtdLivroCadastrado = aux;
 
       if ( RgLivro.QtdLivrosDisponiveis > 0 ){
         RgLivro.Status = 1;
@@ -108,316 +113,61 @@ void Incluir() {
 }
 
 void LTodos() {
-  contador = 0;
-  char titulo[100][100];
-  char autor[100][100];
-  int paginas[100];
-  int quantidade[100];
-  int status[100];
-  int x, y, r;
-  int i = 0;
-  char auxTitulo[80];
-  char auxAutor[80];
-  int auxPaginas;
-  int auxQuantidade;
-  int auxStatus;
-
-  fseek(ArqLivro,0,0);
-
-  do{
-  	fread(&RgLivro,Tamanho,1,ArqLivro);
-  	contador++;
-  }while (!feof(ArqLivro));
-
-  fseek(ArqLivro,0,0);
-    i = 0;
-  do{
-  	 fread(&RgLivro,Tamanho,1,ArqLivro);
-  	 strcpy(titulo[i], RgLivro.Titulo);
-  	 strcpy(autor[i], RgLivro.Autor);
-  	 paginas[i] = RgLivro.QtdPaginas;
-  	 quantidade[i] = RgLivro.QtdLivrosDisponiveis;
-  	 status[i] = RgLivro.Status;
-  	 i++;
-  }while (!feof(ArqLivro));
-
   system("cls");
   printf("*** lista todos ***\n\n");
-
-
-   if(contador == 2){
-
- 	    for(i = 0; i< 1; i++){
-
-        	printf("Título: %s\n", titulo[i]);
-  	        printf("Autor: %s\n", autor[i]);
-            printf("Quantidade de Páginas: %d\n", paginas[i]);
-            printf("Quantidade de Livros Disponíveis: %d\n", quantidade[i]);
-            if ( quantidade[i] == 0 ){
-                printf("Status do Livro: %s\n\n", "Indisponivel");
-            } else {
-            printf("Status do Livro: %s\n\n", "Disponivel");
-
-            }
-        }
-
-   }else if(contador == 3){
-
- 	    fseek(ArqLivro,0,0);
-
-    	for(x=0; x<= contador - 1;x++){
-		    for(y = x+1; y<= 3; y++){
-			    r = strcmp(titulo[x], titulo[y]);
-
-			    if(r > 0){
-			    	strcpy(auxTitulo, titulo[x]);
-			    	strcpy(titulo[x], titulo[y]);
-				    strcpy(titulo[y], auxTitulo);
-
-				    strcpy(auxAutor, autor[x]);
-			    	strcpy(autor[x], autor[y]);
-				    strcpy(autor[y], auxAutor);
-
-				    auxPaginas = paginas[x];
-			    	paginas[x] = paginas[y];
-				    paginas[y] = auxPaginas;
-
-				    auxQuantidade = quantidade[x];
-			    	quantidade[x] = quantidade[y];
-				    quantidade[y] = auxQuantidade;
-
-				    auxStatus = status[x];
-			    	status[x] = status[y];
-				    status[y] = auxStatus;
-			    }
-            }
-        }
+  fseek(ArqLivro,0,0);
 
 
 
+  do {
+    fread(&RgLivro,Tamanho,1,ArqLivro);
 
-      	for(i = 1; i<contador; i++){
+    if (!feof(ArqLivro)){
+      printf("Título: %s\n",RgLivro.Titulo);
+      printf("Autor: %s\n", RgLivro.Autor);
+      printf("Quantidade de Páginas: %d\n", RgLivro.QtdPaginas);
+      printf("Quantidade de Livros Disponíveis: %d\n",RgLivro.QtdLivrosDisponiveis);
+      if ( RgLivro.QtdLivrosDisponiveis == 0 ){
+        printf("Status do Livro: %s\n", "Indisponivel");
+      } else {
+        printf("Status do Livro: %s\n", "Disponivel");
+      }
+      printf("***\n\n");
+    }
+  } while (!feof(ArqLivro));
 
-        	printf("Título: %s\n", titulo[i]);
-  	        printf("Autor: %s\n", autor[i]);
-            printf("Quantidade de Páginas: %d\n", paginas[i]);
-            printf("Quantidade de Livros Disponíveis: %d\n", quantidade[i]);
-            if ( quantidade[i] == 0 ){
-                printf("Status do Livro: %s\n\n", "Indisponivel");
-            } else {
-            printf("Status do Livro: %s\n\n", "Disponivel");
-
-            }
-
-        }
-
- }else if(contador >3){
-
- 	 fseek(ArqLivro,0,0);
-
-    	for(x=0; x<= contador - 1;x++){
-		    for(y = x+1; y<= 2; y++){
-			    r = strcmp(titulo[x], titulo[y]);
-
-			    if(r > 0){
-			    	strcpy(auxTitulo, titulo[x]);
-			    	strcpy(titulo[x], titulo[y]);
-				    strcpy(titulo[y], auxTitulo);
-
-				    strcpy(auxAutor, autor[x]);
-			    	strcpy(autor[x], autor[y]);
-				    strcpy(autor[y], auxAutor);
-
-				    auxPaginas = paginas[x];
-			    	paginas[x] = paginas[y];
-				    paginas[y] = auxPaginas;
-
-				    auxQuantidade = quantidade[x];
-			    	quantidade[x] = quantidade[y];
-				    quantidade[y] = auxQuantidade;
-
-				    auxStatus = status[x];
-			    	status[x] = status[y];
-				    status[y] = auxStatus;
-			    }
-            }
-        }
-
-
-
-
-      	for(i = 0; i<contador -1; i++){
-
-        	printf("Título: %s\n", titulo[i]);
-  	        printf("Autor: %s\n", autor[i]);
-            printf("Quantidade de Páginas: %d\n", paginas[i]);
-            printf("Quantidade de Livros Disponíveis: %d\n", quantidade[i]);
-            if ( quantidade[i] == 0 ){
-                printf("Status do Livro: %s\n\n", "Indisponivel");
-            } else {
-            printf("Status do Livro: %s\n\n", "Disponivel");
-
-            }
-
-        }
- }
-
-    system("pause");
-    system("read -p \"Pressione enter para sair\" saindo");
-    return;
+   system("pause");
+  system("read -p \"Pressione enter para sair\" saindo");
+  return;
 }
+
+
 
 void LTodosDisponiveis() {
-
-    contador = 0;
-  char titulo[100][100];
-  char autor[100][100];
-  int paginas[100];
-  int quantidade[100];
-  int status[100];
-  int x, y, r;
-  int i = 0;
-  char auxTitulo[80];
-  char auxAutor[80];
-  int auxPaginas;
-  int auxQuantidade;
-  int auxStatus;
-
-  fseek(ArqLivro,0,0);
-
-  do{
-  	fread(&RgLivro,Tamanho,1,ArqLivro);
-  	contador++;
-  }while (!feof(ArqLivro));
-
-  fseek(ArqLivro,0,0);
-    i = 0;
-  do{
-  	 fread(&RgLivro,Tamanho,1,ArqLivro);
-  	 strcpy(titulo[i], RgLivro.Titulo);
-  	 strcpy(autor[i], RgLivro.Autor);
-  	 paginas[i] = RgLivro.QtdPaginas;
-  	 quantidade[i] = RgLivro.QtdLivrosDisponiveis;
-  	 status[i] = RgLivro.Status;
-  	 i++;
-  }while (!feof(ArqLivro));
-
   system("cls");
-  printf("*** lista todos ***\n\n");
+  printf("*** Lista Todos Livros Disponíveis***\n\n");
+  fseek(ArqLivro,0,0);
 
+  do {
+    fread(&RgLivro,Tamanho,1,ArqLivro);
 
-   if(contador == 2){
+    if (!feof(ArqLivro)){
+      if (RgLivro.QtdLivrosDisponiveis != 0){
+        printf("Título: %s\n",RgLivro.Titulo);
+        printf("Autor: %s\n", RgLivro.Autor);
+        printf("Quantidade de Páginas: %d\n", RgLivro.QtdPaginas);
+        printf("Quantidade de Livros Disponíveis: %d\n",RgLivro.QtdLivrosDisponiveis);
+        printf("Status do Livro: %s\n", "Disponivel");
+        printf("***\n\n");
+      }
+    }
+  } while (!feof(ArqLivro));
 
- 	    for(i = 0; i< 1; i++){
-
-        	if ( quantidade[i] != 0 ){
-        	printf("Título: %s\n", titulo[i]);
-  	        printf("Autor: %s\n", autor[i]);
-            printf("Quantidade de Páginas: %d\n", paginas[i]);
-            printf("Quantidade de Livros Disponíveis: %d\n", quantidade[i]);
-            printf("Status do Livro: %s\n\n", "Disponivel");
-            }
-        }
-
-   }else if(contador == 3){
-
- 	    fseek(ArqLivro,0,0);
-
-    	for(x=0; x<= contador - 1;x++){
-		    for(y = x+1; y<= 3; y++){
-			    r = strcmp(titulo[x], titulo[y]);
-
-			    if(r > 0){
-			    	strcpy(auxTitulo, titulo[x]);
-			    	strcpy(titulo[x], titulo[y]);
-				    strcpy(titulo[y], auxTitulo);
-
-				    strcpy(auxAutor, autor[x]);
-			    	strcpy(autor[x], autor[y]);
-				    strcpy(autor[y], auxAutor);
-
-				    auxPaginas = paginas[x];
-			    	paginas[x] = paginas[y];
-				    paginas[y] = auxPaginas;
-
-				    auxQuantidade = quantidade[x];
-			    	quantidade[x] = quantidade[y];
-				    quantidade[y] = auxQuantidade;
-
-				    auxStatus = status[x];
-			    	status[x] = status[y];
-				    status[y] = auxStatus;
-			    }
-            }
-        }
-
-
-
-
-      	for(i = 1; i<contador; i++){
-
-        	if ( quantidade[i] != 0 ){
-        	printf("Título: %s\n", titulo[i]);
-  	        printf("Autor: %s\n", autor[i]);
-            printf("Quantidade de Páginas: %d\n", paginas[i]);
-            printf("Quantidade de Livros Disponíveis: %d\n", quantidade[i]);
-            printf("Status do Livro: %s\n\n", "Disponivel");
-            }
-
-        }
-
- }else if(contador >3){
-
- 	 fseek(ArqLivro,0,0);
-
-    	for(x=0; x<= contador - 1;x++){
-		    for(y = x+1; y<= 2; y++){
-			    r = strcmp(titulo[x], titulo[y]);
-
-			    if(r > 0){
-			    	strcpy(auxTitulo, titulo[x]);
-			    	strcpy(titulo[x], titulo[y]);
-				    strcpy(titulo[y], auxTitulo);
-
-				    strcpy(auxAutor, autor[x]);
-			    	strcpy(autor[x], autor[y]);
-				    strcpy(autor[y], auxAutor);
-
-				    auxPaginas = paginas[x];
-			    	paginas[x] = paginas[y];
-				    paginas[y] = auxPaginas;
-
-				    auxQuantidade = quantidade[x];
-			    	quantidade[x] = quantidade[y];
-				    quantidade[y] = auxQuantidade;
-
-				    auxStatus = status[x];
-			    	status[x] = status[y];
-				    status[y] = auxStatus;
-			    }
-            }
-        }
-
-
-
-
-      	for(i = 0; i<contador -1; i++){
-
-        	if ( quantidade[i] != 0 ){
-        	printf("Título: %s\n", titulo[i]);
-  	        printf("Autor: %s\n", autor[i]);
-            printf("Quantidade de Páginas: %d\n", paginas[i]);
-            printf("Quantidade de Livros Disponíveis: %d\n", quantidade[i]);
-            printf("Status do Livro: %s\n\n", "Disponivel");
-            }
-
-        }
- }
-
-    system("pause");
-    system("read -p \"Pressione enter para sair\" saindo");
-    return;
+  system("pause");
+  system("read -p \"Pressione enter para sair\" saindo");
+  return;
 }
+
 
 void Atualizar(){
 
@@ -468,7 +218,7 @@ void Atualizar(){
 		    printf("1 - Atualizar título\n");
 		    printf("2 - Atualizar Autor\n");
 		    printf("3 - Atualizar número de páginas\n");
-		    printf("4 - Atualizar quantidade de páginas\n");
+		    printf("4 - Atualizar quantidade de livros\n");
 		    printf("5 - Atualizar status\n");
 		    scanf("%d", &opcao);
 
@@ -545,6 +295,7 @@ void Atualizar(){
 
 				case 4:{
 					int Achou = 0;
+					int aux = 0;
 		    		fclose(ArqLivro);
                     ArqLivro=fopen("Livros.dat","r+b");
 
@@ -557,8 +308,10 @@ void Atualizar(){
                         if (Achou==0)
                             printf("Registro inexistente!");
                         else{
+                            aux = RgLivro.QtdLivroCadastrado;
                             printf("Qual a nova quantidade de livros? \n");
-                            scanf("%d", &RgLivro.QtdLivrosDisponiveis);
+                            scanf("%d", &RgLivro.QtdLivroCadastrado);
+                            RgLivro.QtdLivrosDisponiveis = (RgLivro.QtdLivrosDisponiveis + (RgLivro.QtdLivroCadastrado - aux));
                             fseek(ArqLivro,-Tamanho,1);
                             fwrite(&RgLivro,Tamanho,1,ArqLivro);
                             printf(">>> Alteracao efetuada com sucesso! <<<\n");}
@@ -665,7 +418,6 @@ void Consultar() {
                 system("pause");
 				}else{
 
-					//scanf("%d", &RgLivro.QtdLivrosDisponiveis );
 					RgLivro.QtdLivrosDisponiveis = RgLivro.QtdLivrosDisponiveis - 1;
                     fseek(ArqLivro,-Tamanho,1);
                     fwrite(&RgLivro,Tamanho,1,ArqLivro);
@@ -703,11 +455,15 @@ void Consultar() {
 				system("pause");
 			} else{
 
-					//scanf("%d", &RgLivro.QtdLivrosDisponiveis );
-					RgLivro.QtdLivrosDisponiveis = RgLivro.QtdLivrosDisponiveis + 1;
+					if(RgLivro.QtdLivrosDisponiveis + 1 <= RgLivro.QtdLivroCadastrado ){
+                    RgLivro.QtdLivrosDisponiveis = RgLivro.QtdLivrosDisponiveis + 1;
                     fseek(ArqLivro,-Tamanho,1);
                     fwrite(&RgLivro,Tamanho,1,ArqLivro);
                     printf(">>> Devolução efetuada com sucesso! <<<\n");
+
+					}else{
+					    printf("Devolução negada");
+					}
 
                 system("pause");
 
